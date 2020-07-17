@@ -1,0 +1,444 @@
+openapi: 3.0.0
+info:
+  title: echelonews-user-handler
+  description: EcheloNews User Handler API
+  version: 0.0.1
+
+paths:
+  /:
+    get:
+      summary: Get basic informations on the server
+      responses:
+        '200':
+          description: Generic informations on the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerInfo"
+
+  /users/byid/{id}:
+    get:
+      summary: Get a user by univocal ID
+      tags:
+        - Fetching
+      parameters:
+        - name: id
+          in: path
+          description: User univocal ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A User entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    put:
+      summary: Update a user by univocal ID
+      tags:
+        - Updating
+      parameters:
+        - name: id
+          in: path
+          description: User univocal ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+        '403':
+          $ref: "#/components/responses/Forbidden"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    delete:
+      summary: Delete a user by univocal ID
+      tags:
+        - Deleting
+      parameters:
+        - name: id
+          in: path
+          description: User univocal ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+        '404':
+          $ref: "#/components/responses/NotFound"
+
+  /users/byname/{name}:
+    get:
+      summary: Get a user by name
+      tags:
+        - Fetching
+      parameters:
+        - name: name
+          in: path
+          description: User name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A User entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    put:
+      summary: Update a user by name
+      tags:
+        - Updating
+      parameters:
+        - name: name
+          in: path
+          description: User name
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+        '403':
+          $ref: "#/components/responses/Forbidden"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    delete:
+      summary: Delete a user by name
+      tags:
+        - Deleting
+      parameters:
+        - name: name
+          in: path
+          description: User name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+        '404':
+          $ref: "#/components/responses/NotFound"
+
+  /users/byemail/{email}:
+    get:
+      summary: Get a user by email
+      tags:
+        - Fetching
+      parameters:
+        - name: email
+          in: path
+          description: User email
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A User entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    put:
+      summary: Update a user by email
+      tags:
+        - Updating
+      parameters:
+        - name: email
+          in: path
+          description: User email
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+        '403':
+          $ref: "#/components/responses/Forbidden"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    delete:
+      summary: Delete a user by email
+      tags:
+        - Deleting
+      parameters:
+        - name: email
+          in: path
+          description: User email
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+        '404':
+          $ref: "#/components/responses/NotFound"
+
+  /oauth:
+    post:
+      summary: Retrieve or register a new OAuth user (with Google as the provider)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        '200':
+          description: Fetched an existent user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '201':
+          description: Created a new user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+  /oauth/{id}:
+    get:
+      summary: Get a OAuth user by univocal ID
+      tags:
+        - Fetching
+      parameters:
+        - name: id
+          in: path
+          description: OAuth user univocal ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An OAuth user entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    put:
+      summary: Update an OAuth user by univocal ID
+      tags:
+        - Updating
+      parameters:
+        - name: id
+          in: path
+          description: OAuth user univocal ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+        '403':
+          $ref: "#/components/responses/Forbidden"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    delete:
+      summary: Delete an OAuth user by univocal ID
+      tags:
+        - Deleting
+      parameters:
+        - name: id
+          in: path
+          description: OAuth user univocal ID
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+        '404':
+          $ref: "#/components/responses/NotFound"
+
+  /auth:
+    post:
+      summary: Authenticate a user with login/password credentials
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginCredentials"
+      responses:
+        '200':
+          description: A user representation which can be shared safely
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+        '404':
+          $ref: "#/components/responses/NotFound"
+
+  /register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        '201':
+          description: A sharing-safe representation of the created user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        '400':
+          $ref: "#/components/responses/MalformedRequest"
+        '403':
+          $ref: "#/components/responses/Forbidden"
+
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error description message
+    ValidationError:
+      type: object
+      description: "Error in the form { field: [ error1, ... ], ... }"
+      example:
+        name: ['Name is too long', 'Name can not contain symbols']
+        pass: ['Missing password']
+    ServerInfo:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Message by the user handler server
+        uptime:
+          type: number
+          description: Server uptime in seconds
+        platform:
+          type: string
+          description: Server host platform type
+        databaseStatus:
+          type: string
+          enum: [Available, Unavailable]
+          description: Status of the user database
+        users:
+          type: integer
+          nullable: true
+          description: Number of users present in the database
+    LoginCredentials:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User name
+        pass:
+          type: string
+          description: User plaintext password
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: User univocal ID
+        name:
+          type: string
+          description: User name
+        email:
+          type: string
+          description: User email
+        created:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        topics:
+          type: array
+          items:
+            type: string
+        countries:
+          type: array
+          items:
+            type: string
+
+  responses:
+    MalformedRequest:
+      description: Malformed request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    Forbidden:
+      description: Operation can not be performed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

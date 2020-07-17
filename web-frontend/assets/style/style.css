@@ -1,0 +1,97 @@
+/* Generic stylesheets */
+body {
+  padding-top: 72px;
+}
+
+form h1 {
+  display: block;
+  margin-bottom: 0.8em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid gray;
+  color: black;
+  text-align: center;
+}
+  
+p {
+  font-family: verdana;
+  font-size: 20px;
+}
+
+.center-text { text-align: center; }
+
+/* Navbar stylesheets */
+#main-navbar .btn {
+  margin: 0 4px;
+}
+
+/* Banner stylesheets */
+#main-content .banner {
+  border-radius: 8px 8px 0px 0px;
+}
+
+/* Content stylesheets */
+#main-content .card {
+  width: 20rem;
+  height: 24rem;
+}
+
+#main-content .card img {
+  height: 10rem;
+}
+
+h1.no-news-heading {
+  display: block;
+  margin-top: 2.1em;
+  text-align: center;
+  color: #888;
+  font-size: 3.1em;
+  font-weight: lighter;
+}
+
+/* Forms */
+.full-size-form {
+  display: block;
+  padding: 24px 0;
+  width: 64%;
+}
+
+.full-size-form .form-group {
+  margin: 24px auto;
+  max-width: 78%;
+}
+
+/* Google OAuth button */
+.google-button {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+/* News showing */
+.country-emoji {
+  text-align: center;
+  font-size: 2em;
+  margin: 0 auto;
+}
+
+.btn-rate {
+  margin: 4px auto;
+}
+
+.feedback-positive {
+  box-sizing: border-box;
+  border: 1px solid greenyellow;
+  border-radius: 16px;
+  -webkit-box-shadow: inset 0px 0px 8px -2px greenyellow;
+  -moz-box-shadow: inset 0px 0px 8px -2px greenyellow;
+  box-shadow: inset 0px 0px 8px -2px greenyellow;
+}
+
+.feedback-negative {
+  box-sizing: border-box;
+  border: 1px solid lightcoral;
+  border-radius: 16px;
+  -webkit-box-shadow: inset 0px 0px 8px -2px lightcoral;
+  -moz-box-shadow: inset 0px 0px 8px -2px lightcoral;
+  box-shadow: inset 0px 0px 8px -2px lightcoral;
+}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head', { title: 'News' }) %>
+<body>
+  <%- include('partials/navbar', { user }) %>
+  <div class="container">
+    <%- include('partials/banner') %>
+    <div class="container">
+      <div class="shadow-lg p-3 mb-5 bg-white">
+        <div class="row">
+
+          <!-- Post /news form -->
+          <div class="col-md-3">
+            <div class="card">
+              <img src="img/worldnews.jpg" class="card-img-top" alt="World news">
+              <div class="card-body">
+                <form action="/news" method="post" name="news">
+                  <div class="form-group">
+                    <label for="name">Topic</label>
+                    <input type="text" name="topic" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="lang">Language</label>
+                    <select name="lang">
+                      <% for (const l of langs) { %>
+                        <option value="<%= l.code %>">
+                          <%= l.name %>
+                        </option>
+                      <% } %>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="countries">Countries</label>
+                      <ul class="list-group list-group-flush" id="countries-list">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <select class="col-sm-10">
+                            <% for (const c of sortedCountries) { %>
+                              <option value="<%= c.code %>"><%= c.name %></option>
+                            <% } %>
+                          </select>
+                          <a href="#" class="badge badge-success" id="countries-add">Add</a>
+                        </li>
+                      </ul>
+                      <input type="hidden" name="countries">
+                  </div>
+                  <button class="btn btn-primary" type="button" onclick="postNews()">Multiplex</button>
+                </form>
+              </div>
+            </div>
+          </div>
+    
+          <!-- Article show -->
+          <div class="col-md-9">
+            <% if (news.length) { %>
+              <div class="container">
+                <div style="overflow-x: scroll;">
+                  <table class="table">
+                    <thead class="thead-dark">
+                      <tr class="header">
+                        <th scope="col"></th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Preview</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Original Title</th>
+                        <th scope="col">Original Preview</th>
+                      </tr>
+                    </thead>
+                    <% news.forEach(function(item) { %>
+                      <tr npaperid="<%= item.npaper.id %>">
+                        <td>
+                          <p class="country-emoji">
+                            <%= countries[item.country].emoji %>
+                          </p>
+                          <img class="btn-rate" rate="1" src="/img/like.png" alt="Like">
+                          <img class="btn-rate" rate="-1" src="/img/dislike.png" alt="Dislike">
+                        </td>
+                        <td><a href="<%= item.origin %>" target="_blank"><%= item.translatedTitle %></a></td>
+                        <td><%= item.translatedPreview.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/gim, ' ') %></td>
+                        <td><%= item.created.toLocaleString() %></td>
+                        <td><%= item.title %></td>
+                        <td><%= item.preview.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/gim, ' ') %></td>
+                      </tr>
+                    <% }) %>
+                  </table>
+                </div>
+              </div>
+            <% } else { %>
+              <h1 class="no-news-heading">No news here</h1>
+            <% } %>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="/js/libprofile.js"></script>
+<script>
+  // Set form buttons
+  $(function() {
+    $('#countries-add').click(function(e) { addCountry() })
+    $('#topics-add').click(function(e) { addTopic() })
+    $('#countries-list a.remover').click(function(e) { removeItem(this) })
+    $('#topics-list a.remover').click(function(e) { removeItem(this) })
+    $('.btn-rate').click(function(e) { rate(this) })
+  })
+
+  // POST a custom news search
+  function postNews() {
+    document.news.countries.value = listCountries()
+    document.news.submit()
+  }
+
+  // Extract an article id from a like/dislike passed by jQuery
+  function rate(button) {
+    if (button.attributes.disabled) return
+
+    // Extract article ID and score
+    const score = parseInt(button.attributes.rate.value)
+    const npaper = button.parentElement.parentElement.attributes.npaperid.value
+
+    // Construct request body
+    const body = [ ['npaper', npaper], ['score', score], ]
+      .map(([key, val]) => encodeURIComponent(key) + '=' + encodeURIComponent(val)).join('&')
+
+    // Perform request
+    fetch('/feedback', {
+      method: 'put',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      credentials: 'include',
+      body
+    }).then(res => {
+      if (res.ok) {
+        $(button).addClass(score > 0 ? 'feedback-positive' : 'feedback-negative')
+        $(button).siblings('.btn-rate').attr('disabled', 1)
+        $(button).attr('disabled', 0)
+      } else {
+        alert('Warning: Bad server response')
+        console.error('API returned status code ' + res.status.toString())
+      }
+    })
+  }
+</script>
+</html>
